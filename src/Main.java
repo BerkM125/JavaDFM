@@ -10,17 +10,20 @@ import javax.swing.*;
 public class Main extends JFrame{ 
     static JProgressBar relocationProgress;    
     static JLabel progressLabel = new JLabel("File Relocation Progress");    
+    static int index = 0;
     static int i=0,num=0; 
     static int size = 4; //Number of folders  
-                  
+    static String type;
+    static String types[] = {new String("undefined"), new String("undefined")}; 
+                     
     public static void iterate(int increment){
         int sz = i;
         while (i < (sz+increment)) {   
             i += 1;
             relocationProgress.setValue(i);                  
-            try{Thread.sleep(50);}catch(Exception e){}
+            try{Thread.sleep(10);}catch(Exception e){}
         }
-        if(i == 100)
+        if(i == 100 && type.equals(types[0]) == false)
             System.exit(0);
         return;         
     } 
@@ -64,7 +67,7 @@ public class Main extends JFrame{
     }
     
     private static void relocateFiles (String[] content, String extension, String folder) throws IOException {
-        int index = 0;
+        index = 0;
         while(index != 999) {
            index = searchSubString(content, extension);
            if (index != 999) {
@@ -73,7 +76,8 @@ public class Main extends JFrame{
            } 
            content = removeStringFromArr(content, index);                       
         }
-        iterate(100/size);             
+        iterate(100/size);
+        index = 0;             
     }
     
     private static void createDirectory (String name) {
@@ -85,6 +89,15 @@ public class Main extends JFrame{
         JFrame window = new JFrame ("JavaDFM");
         JPanel panel = new JPanel();
         String content[] = getDownloadsContents();
+        types[0] = new String("Background-Task");
+        types[1] = new String("Run-once-for-all-current-downloads");
+        type = (String)JOptionPane.showInputDialog(window, 
+                             "Process Type",
+                             "Choose program execution type:",
+                             JOptionPane.QUESTION_MESSAGE
+                             ,null,
+                             types,
+                             types[0]);
         //Initialize progress bar
         relocationProgress = new JProgressBar(0,100);           
         relocationProgress.setValue(0);    
@@ -101,18 +114,55 @@ public class Main extends JFrame{
         createDirectory("PDFs");
         createDirectory("Word");
         createDirectory("Compressed");
-        //Get text files and relocate them  
-        try {relocateFiles (content, ".txt", "Texts");  }
-        catch (Exception IOException) {return;}
-        //Get compressed files and relocate them
-        try {relocateFiles (content, ".pdf", "PDFs");  }
-        catch (Exception IOException) {return;}
-        //Get PDFs and relocate them
-        try {relocateFiles (content, ".zip", "Compressed");  }
-        catch (Exception IOException) {return;}
-        //Get Word Docs and relocate them
-        try {relocateFiles (content, ".docx", "Word");  }
-        catch (Exception IOException) {return;}
-             
+        createDirectory("Images");
+        if(type.equals(types[1])) {
+           //Get text files and relocate them  
+           try {relocateFiles (content, ".txt", "Texts");  }
+           catch (Exception IOException) {return;}
+           //Get PDFs and relocate them
+           try {relocateFiles (content, ".pdf", "PDFs");  }
+           catch (Exception IOException) {return;}
+           //Get Compressed Files and relocate them
+           try {relocateFiles (content, ".zip", "Compressed");  }
+           catch (Exception IOException) {return;}
+           //Get Word Docs and relocate them
+           try {relocateFiles (content, ".docx", "Word");  }
+           catch (Exception IOException) {return;}
+           //Get Images and relocate them
+           try {relocateFiles (content, ".jpg", "Images");  }
+           catch (Exception IOException) {return;}
+           try {relocateFiles (content, ".png", "Images");  }
+           catch (Exception IOException) {return;}
+           try {relocateFiles (content, ".bmp", "Images");  }
+           catch (Exception IOException) {return;}  
+           try {relocateFiles (content, ".gif", "Images");  }
+           catch (Exception IOException) {return;} 
+        } 
+        else {
+           while(true) {
+              i = 0;
+              //Get text files and relocate them  
+              try {relocateFiles (content, ".txt", "Texts");  }
+              catch (Exception IOException) {}
+              //Get PDFs and relocate them
+              try {relocateFiles (content, ".pdf", "PDFs");  }
+              catch (Exception IOException) {}
+              //Get Compressed Files and relocate them
+              try {relocateFiles (content, ".zip", "Compressed");  }
+              catch (Exception IOException) {}
+              //Get Word Docs and relocate them
+              try {relocateFiles (content, ".docx", "Word");  }
+              catch (Exception IOException) {}
+              //Get Images and relocate them
+              try {relocateFiles (content, ".jpg", "Images");  }
+              catch (Exception IOException) {}
+              try {relocateFiles (content, ".png", "Images");  }
+              catch (Exception IOException) {}
+              try {relocateFiles (content, ".bmp", "Images");  }
+              catch (Exception IOException) {}  
+              try {relocateFiles (content, ".gif", "Images");  }
+              catch (Exception IOException) {} 
+           }
+        }               
     } 
 } 
