@@ -9,7 +9,8 @@ import javax.swing.*;
 
 public class Main extends JFrame{ 
     static JProgressBar relocationProgress;    
-    static JLabel progressLabel = new JLabel("File Relocation Progress");    
+    static JLabel progressLabel = new JLabel("File Relocation Progress");
+    static String content[] = getDownloadsContents();    
     static int index = 0;
     static int i=0,num=0; 
     static int size = 4; //Number of folders  
@@ -68,6 +69,7 @@ public class Main extends JFrame{
     
     private static void relocateFiles (String[] content, String extension, String folder) throws IOException {
         index = 0;
+        content = getDownloadsContents();
         while(index != 999) {
            index = searchSubString(content, extension);
            if (index != 999) {
@@ -88,7 +90,6 @@ public class Main extends JFrame{
     public static void main(String[] args) { 
         JFrame window = new JFrame ("JavaDFM");
         JPanel panel = new JPanel();
-        String content[] = getDownloadsContents();
         types[0] = new String("Background-Task");
         types[1] = new String("Run-once-for-all-current-downloads");
         type = (String)JOptionPane.showInputDialog(window, 
