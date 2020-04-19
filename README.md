@@ -1,6 +1,4 @@
 # JavaDFM
-![Logo](JavaDFMIcon.png)
-
 JavaDFM is a file management program that runs on the JRE.
 # Prerequisites
 You must have the JRE installed on your computer.
